@@ -62,36 +62,8 @@ class ViewController: UIViewController {
         let camera = GMSCameraPosition.camera(withLatitude:  pointAlat, longitude: pointAlng, zoom: 9.0)
         mapView.camera = camera
         showMarker(position: camera.target)
-        
-        APIController().getTime(modes:"bicycling",sourcelat: pointAlat, sourcelng: pointAlng, destlat: pointBlat, destlng: pointBlng) { (distance) in
-            let time=distance.rows[0].elements[0].duration.text
-            print(time)
-            let distance=distance.rows[0].elements[0].distance.text
-            print(distance)
-            DispatchQueue.main.async {
-                self.t1.text = "\(time) \((distance))"
-            }
-        }
-        
-        APIController().getTime(modes:"",sourcelat: pointBlat, sourcelng: pointBlng, destlat: pointClat, destlng: pointClng) { (distance) in
-            let time=distance.rows[0].elements[0].duration.text
-            print(time)
-            let distance=distance.rows[0].elements[0].distance.text
-            print(distance)
-            DispatchQueue.main.async {
-                self.t2.text = "\(time) \((distance))"
-            }
-        }
-        
-        APIController().getTime(modes:"",sourcelat: pointClat, sourcelng: pointClng, destlat: pointDlat, destlng: pointDlng) { (distance) in
-            let time=distance.rows[0].elements[0].duration.text
-            print(time)
-            let distance=distance.rows[0].elements[0].distance.text
-            print(distance)
-            DispatchQueue.main.async {
-                self.t3.text = "\(time) \((distance))"
-            }
-        }
+        self.calculete("driving")
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -125,12 +97,12 @@ class ViewController: UIViewController {
     @IBAction func actionBT(_ sender: UIButton) {
         if !self.toggle{
             self.toggle = !self.toggle
-            UIView.animate(withDuration: 2.0, animations: {
+            UIView.animate(withDuration: 1.0, animations: {
                 self.slidingView.transform = CGAffineTransform(translationX: 0, y: 130)
             })
         }else{
             self.toggle = !self.toggle
-            UIView.animate(withDuration: 2.0, animations: {
+            UIView.animate(withDuration: 1.0, animations: {
                 self.slidingView.transform = CGAffineTransform(translationX: 0, y: -130)
             })
         }
@@ -147,24 +119,28 @@ extension ViewController {
         marker1.position = CLLocationCoordinate2D(latitude: pointAlat, longitude: pointAlng)
         marker1.title = "A"
        // marker1.snippet = "San Francisco"
+        mapView.selectedMarker = marker1
         marker1.map = mapView
         
         let marker2 = GMSMarker()
         marker2.position = CLLocationCoordinate2D(latitude: pointBlat, longitude: pointBlng)
         marker2.title = "B"
        // marker2.snippet = "San Francisco"
+        mapView.selectedMarker = marker2
         marker2.map = mapView
         
         let marker3 = GMSMarker()
         marker3.position = CLLocationCoordinate2D(latitude: pointClat, longitude: pointClng)
         marker3.title = "C"
        // marker3.snippet = "San Francisco"
+        mapView.selectedMarker = marker3
         marker3.map = mapView
         
         let marker4 = GMSMarker()
         marker4.position = CLLocationCoordinate2D(latitude: pointDlat, longitude: pointDlng)
         marker4.title = "D"
         //marker4.snippet = "San Francisco"
+        mapView.selectedMarker = marker4
         marker4.map = mapView
         
     }
